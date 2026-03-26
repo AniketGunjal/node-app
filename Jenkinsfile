@@ -15,21 +15,13 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                if ! command -v npm &> /dev/null
-                then
-                    echo "Node.js not installed"
-                    exit 1
-                fi
-                npm install
-                '''
+                bat 'npm install'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                eval $(minikube docker-env)
+                bat '''
                 docker build -t node-app .
                 '''
             }
@@ -37,13 +29,13 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f deployment.yaml'
             }
         }
 
         stage('Verify') {
             steps {
-                sh 'kubectl get pods'
+                bat 'kubectl get pods'
             }
         }
     }
@@ -51,7 +43,7 @@ pipeline {
     post {
         failure {
             echo 'Rollback triggered'
-            sh 'kubectl rollout undo deployment node-app || true'
+            bat 'kubectl rollout undo deployment node-app'
         }
     }
 }
