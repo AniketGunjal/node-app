@@ -30,8 +30,13 @@ pipeline {
                 bat 'kubectl get pods'
             }
         }
+    
+	stage('Test Kubernetes') {
+    	    steps {
+        	bat 'kubectl get nodes'
+    	    }
+	}
     }
-
     post {
         failure {
             echo 'Rollback triggered'
