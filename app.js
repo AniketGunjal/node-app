@@ -1,4 +1,5 @@
 const http = require('http');
+throw new Error("fail");
 
 const server = http.createServer((req, res) => {
   res.end("Deployed via Jenkins CI/CD 🚀");
@@ -7,4 +8,4 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () => {
   console.log("Server running");
 });
-throw new Error("fail");
+
